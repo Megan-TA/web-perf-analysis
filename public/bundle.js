@@ -241,7 +241,7 @@
   };
 
   function formatError (error) {
-  // 火狐/safis / chrome 对error信息处理不一致
+    // 火狐/safis / chrome 对error信息处理不一致
     let column = error.column || error.columnNumber;
     let line = error.line || error.lineNumber;
     let errorType = error.name;
@@ -251,20 +251,29 @@
     let matchUrl = stack.match(/(http|https)?:\/\/[^\n]+/);
     let urlFirstStack = matchUrl ? matchUrl[0] : '';
 
-    // 获取真正的url
+    // 获取真实url信息
     let regUrlCheck = /(https|http)?:\/\/(\S)*\.js/;
     let resourceUrl = '';
     if (regUrlCheck.test(urlFirstStack)) {
       resourceUrl = urlFirstStack.match(regUrlCheck)[0];
     }
-    debugger
 
+    let _stackLine = '';
+    let _stackCol = '';
+    // http://localhost:3000/bundle.js:303:15
+    // 兼容chrome没有col,line等信息
+    let posStack = urlFirstStack.match(/:(\d+):(\d+)/);
+    if (posStack && posStack.length >= 3) {
+      [,_stackLine, _stackCol] = posStack;
+    }
 
-
-    debugger
-
-
-    debugger
+    return {
+      row: Number(column || _stackLine) ,
+      col: Number(line || _stackCol),
+      errorType,
+      message,
+      resourceUrl
+    }
   }
 
 
@@ -274,6 +283,11 @@
       window.onerror = function (message, source, lineno, colno, error) {
         try {
           let errorData = formatError(error);
+          errorData._message = message;
+          errorData._source = source;
+          errorData._col = colno;
+          errorData._row = lineno;
+          cb(errorData);
           _error.apply(this, arguments);
         } catch (err) {
           console.log(err);
@@ -283,26 +297,24 @@
   };
 
   Perf.init((perfData) => {
-    console.log('222222111');
+    console.log('拦截到Perf数据：', perfData);
   });
 
-  Resource$1.init(() => {
-    console.log('111');
+  Resource$1.init((resouceData) => {
+    console.log('拦截到Resouce数据：', resouceData);
   });
 
   XhrHook.init((data) => {
     console.log('拦截到ajax数据：', data);
   });
 
-  ErrorCatch.init((data) => {
-    console.log(data);
+  ErrorCatch.init((errorData) => {
+    console.log('拦截到error信息：', errorData);
   });
-
-
-  console.log(www);
 
   exports.Perf = Perf;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
+//# sourceMappingURL=bundle.js.map

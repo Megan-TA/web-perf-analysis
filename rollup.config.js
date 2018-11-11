@@ -6,7 +6,7 @@ export default {
     file: './public/bundle.js',
     name: 'Mybundle', // 挂在window上的属性名称
     format: 'umd',
-    sourceMap: true
+    sourcemap: true 
   },
   watch: {
     exclude: './node_modules/'

@@ -6,23 +6,22 @@ import ErrorCatch from './errCatch'
 
 
 Perf.init((perfData) => {
-  console.log('222222111')
+  console.log('拦截到Perf数据：', perfData)
 })
 
-Resource.init(() => {
-  console.log('111')
+Resource.init((resouceData) => {
+  console.log('拦截到Resouce数据：', resouceData)
 })
 
 XhrHook.init((data) => {
   console.log('拦截到ajax数据：', data)
 })
 
-ErrorCatch.init((data) => {
-  console.log(data)
+ErrorCatch.init((errorData) => {
+  console.log('拦截到error信息：', errorData)
 })
 
 
-console.log(www)
 
 export {
   Perf

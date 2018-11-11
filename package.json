@@ -16,6 +16,10 @@
     "koa": "^2.6.2",
     "koa-static": "^5.0.0",
     "rollup": "^0.67.0",
-    "rollup-plugin-babel": "^4.0.3"
+    "rollup-plugin-babel": "^4.0.3",
+    "source-map": "^0.7.3"
+  },
+  "dependencies": {
+    "create-react-app": "^2.1.1"
   }
 }
