@@ -2,10 +2,7 @@
   "presets": [
     [
       "env", {
-        "modules": false,
-        "targets": {
-          "browsers": ["chrome > 40", "safari >= 7"]
-        }
+        "modules": false
       }
     ]
   ]
